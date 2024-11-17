@@ -255,7 +255,7 @@ model_deploy.py \
 
 
 ```
-[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test1.png ./test1-res.jpg
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test1.jpg ./test1-res.jpg
 enter CVI_TDL_Get_YOLO_Preparam...
 asign val 0 
 asign val 1 
