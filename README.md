@@ -269,6 +269,92 @@ version: 1.4.0
 wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
 Max SharedMem size:2508800
 ---------------------to do detection-----------------------
+image read,width:1920
+image read,hidth:858
+objnum:4
+Detect grass(4): 90.915665 236.684692 390.640045 378.852448 0.857979
+Detect grass(4): 418.214081 0.000000 990.932739 296.319122 0.840113
+Detect hero(0): 891.314758 335.666199 1061.741699 513.453491 0.683700
+Detect soldier(1): 1743.092651 301.290161 1811.119263 366.127258 0.532074
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test2.jpg ./test2-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:1920
+image read,hidth:858
+objnum:7
+Detect grass(4): 403.539185 0.000000 962.936279 294.031677 0.932570
+Detect grass(4): 44.974777 208.389542 368.346405 382.994202 0.776312
+Detect soldier(1): 775.996765 615.650940 893.828613 752.587891 0.683700
+Detect soldier(1): 1476.970947 79.870880 1571.113770 189.782959 0.595178
+Detect soldier(1): 1386.461670 125.734772 1466.339600 241.368347 0.563885
+Detect soldier(1): 1389.500122 161.383987 1481.125122 262.750854 0.563885
+Detect soldier(1): 604.313110 754.505981 707.879395 857.000000 0.563885
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test3.jpg ./test3-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:1920
+image read,hidth:858
+objnum:3
+Detect grass(4): 1037.632812 0.000000 1313.217529 104.026978 0.841593
+Detect grass(4): 543.624390 441.974030 823.163696 675.228882 0.820658
+Detect grass(4): 1259.752441 531.114441 1664.768188 857.000000 0.751391
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test4.jpg ./test4-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:1920
+image read,hidth:858
+objnum:4
+Detect grass(4): 4.928364 481.490112 374.961304 857.000000 0.901330
+Detect grass(4): 1126.676758 0.053284 1432.554688 147.111145 0.804268
+Detect grass(4): 611.394897 186.654419 1005.244873 539.607056 0.776312
+Detect grass(4): 930.379395 98.758987 1454.645874 381.534576 0.602230
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test5.png ./test5-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
 image read,width:3168
 image read,hidth:1440
 objnum:7
@@ -279,6 +365,104 @@ Detect soldier(1): 2545.095947 1229.370605 2760.516846 1439.000000 0.736484
 Detect soldier(1): 1304.465210 804.322693 1462.080322 980.739136 0.710806
 Detect tower(3): 665.742432 0.000000 886.644775 203.547089 0.655286
 Detect soldier(1): 2446.042236 860.136475 2645.260010 1087.134399 0.655286
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test6.png ./test6-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:3168
+image read,hidth:1440
+objnum:7
+Detect tower(3): 1267.669434 713.675537 1587.508301 1164.443726 0.804268
+Detect soldier(1): 1485.243408 640.722229 1676.660767 816.582153 0.760650
+Detect tower(3): 1997.918091 70.318085 2214.204102 338.551453 0.736484
+Detect soldier(1): 1920.136230 423.432953 2066.384766 576.405640 0.736484
+Detect grass(4): 1482.762573 82.517021 1673.772217 264.839294 0.710806
+Detect soldier(1): 1741.007812 511.173859 1890.553589 675.679016 0.655286
+Detect grass(4): 2630.007080 1197.088623 3067.743408 1437.694458 0.595178
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test7.png ./test7-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:3168
+image read,hidth:1440
+objnum:12
+Detect grass(4): 2044.599365 872.475708 2454.618164 1156.496460 0.857979
+Detect grass(4): 2399.635254 723.132019 2825.844727 970.528259 0.823706
+Detect grass(4): 2586.780029 195.426590 2862.163330 494.901917 0.783252
+Detect grass(4): 147.981277 414.233429 397.310699 544.300537 0.736484
+Detect tower(3): 2002.271851 57.844669 2243.907227 334.110504 0.710806
+Detect grass(4): 571.654663 125.627403 886.539917 385.061401 0.710806
+Detect hero(0): 1440.644897 638.255676 1624.099243 867.324036 0.683700
+Detect grass(4): 20.100384 7.809604 140.061340 230.685074 0.655286
+Detect soldier(1): 1214.385010 612.603699 1352.926392 759.386108 0.655286
+Detect soldier(1): 793.285034 806.322937 922.931030 944.308716 0.655286
+Detect hero(0): 780.677124 139.779648 1014.197754 383.148499 0.595178
+Detect soldier(1): 1338.223999 545.199402 1462.769043 698.705872 0.563885
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test8.png ./test8-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:3168
+image read,hidth:1440
+objnum:6
+Detect grass(4): 2305.111328 502.570587 2817.546875 821.567505 0.928868
+Detect soldier(1): 1622.615601 895.127747 1837.830566 1151.653687 0.760650
+Detect grass(4): 5.026778 578.812317 235.149124 894.203674 0.710806
+Detect tower(3): 1279.594971 390.505676 1611.648682 882.607422 0.683700
+Detect soldier(1): 2551.292480 954.174133 2806.171387 1161.206909 0.683700
+Detect soldier(1): 2050.965088 910.393311 2321.228271 1136.329956 0.595178
+[root@milkv-duo]~/test# ./sample_yolov8 ./wangzhe-int8-sym.cvimodel ./test9.png ./test9-res.jpg
+enter CVI_TDL_Get_YOLO_Preparam...
+asign val 0 
+asign val 1 
+asign val 2 
+setup yolov8 param 
+enter CVI_TDL_Get_YOLO_Preparam...
+setup yolov8 algorithm param 
+yolov8 algorithm parameters setup success!
+---------------------openmodel-----------------------
+version: 1.4.0
+wangzhe Build at 2024-11-17 19:24:30 For platform cv181x
+Max SharedMem size:2508800
+---------------------to do detection-----------------------
+image read,width:3168
+image read,hidth:1440
+objnum:5
+Detect grass(4): 1973.036865 287.334076 2638.095215 701.015930 0.873866
+Detect grass(4): 714.001526 0.000000 1023.952332 144.343918 0.841593
+Detect grass(4): 572.839966 101.798050 967.360840 391.481140 0.760650
+Detect hero(0): 2010.885742 226.585022 2151.338623 436.618866 0.736484
+Detect dragon(5): 999.865112 160.920853 1845.312012 953.739380 0.602230
 ```
 
 ![test1-res.jpg](result/test1-res.jpg)
