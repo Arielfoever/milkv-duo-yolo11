@@ -55,7 +55,7 @@ ffmpeg.exe -i round1-1.mp4 -f image2 -q:v 2 -vf fps=fps=1/3 round1-1/image-round
 
 使用 [yolo11-seg.yaml](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/cfg/models/11/yolo11-seg.yaml) 作为模型参数训练用于标记的预训练模型。
 
-使用 [x-label.yaml](./x-label/x-label.yaml)
+使用 [x-label.yaml](x-label/x-label.yaml)
 
 ```yaml
 type: yolo11_seg
@@ -245,6 +245,90 @@ model_deploy.py \
 --calibration_table wangzhe_cali_table \
 --processor cv181x \
 --model wangzhe-int8-sym.cvimodel
+```
+
+### 非对称模型会产生bug
+
+```
+model_deploy.py \
+--mlir wangzhe.mlir \
+--quant_input --quant_output \
+--quantize INT8 --asymmetric \
+--calibration_table wangzhe_cali_table \
+--processor cv181x \
+--model wangzhe-int8-asym.cvimodel
+```
+
+使用非对称会出现bug。
+
+```
+root@bacc5a4054eb:/workspace/model_yolov5s/workspace# model_deploy.py \                          
+--mlir wangzhe.mlir \                                                                           
+--quant_input --quant_output \                                                                  
+--quantize INT8 --asymmetric \                                                                  
+--calibration_table wangzhe_cali_table \                                                        
+--processor cv181x \                                                                            
+--model wangzhe-int8-asym.cvimodel                                                              
+2024/11/17 21:17:43 - INFO : TPU-MLIR 081d28a-20241114                     
+2024/11/17 21:17:43 - INFO :                                                                    
+  load_config Preprocess args :                                                                 
+        resize_dims           : [640, 640]                                                      
+        keep_aspect_ratio     : True                                                            
+        keep_ratio_mode       : letterbox                                                       
+        pad_value             : 0                                                               
+        pad_type              : center                                                          
+        input_dims            : [640, 640]                                                      
+        --------------------------                                                              
+        mean                  : [0.0, 0.0, 0.0]                                                 
+        scale                 : [0.0039216, 0.0039216, 0.0039216]
+        --------------------------
+        pixel_format          : rgb                                                             
+        channel_format        : nchw   
+                                                                                                
+[Running]: tpuc-opt wangzhe.mlir --processor-assign="chip=cv181x mode=INT8 num_device=1 num_core=1 addr_mode=auto" --import-calibration-table="file=wangzhe_cali_table asymmetric=True" --processor-top-optimize --convert-top-to-tpu=" asymmetric=True doWinograd=False ignore_f16_overflow=False q_group_size=0 matmul_perchannel=False gelu_mode=normal" --canonicalize --weight-fold -o wang
+zhe_cv181x_int8_asym_tpu.mlir                                                                   
+<unknown>:0: error: illegal min and max: (8.494865e+00:-8.494865e+00)          
+tpuc-opt: /llvm-project/mlir/include/mlir/IR/StorageUniquerSupport.h:180: static ConcreteT mlir::detail::StorageUserBase<mlir::quant::CalibratedQuantizedType, mlir::quant::QuantizedType, mlir::quant::detail::CalibratedQuantizedTypeStorage, mlir::detail::TypeUniquer>::get(mlir::MLIRContext *, Args...) [ConcreteT = mlir::quant::CalibratedQuantizedType, BaseT = mlir::quant::QuantizedType, StorageT = mlir::quant::detail::CalibratedQuantizedTypeStorage, UniquerT = mlir::detail::TypeUniquer, Traits = <>, Args = <mlir::Type, double, double>]: Assertion `succeeded(ConcreteT::verify(getDefaultDiagnosticEmitFn(ctx), args...))' failed.
+PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
+Stack dump:
+0.      Program arguments: tpuc-opt wangzhe.mlir --init "--processor-assign=chip=cv181x mode=INT8 num_device=1 num_core=1 addr_mode=auto" "--import-calibration-table=file=wangzhe_cali_table asymmetric=True" --processor-top-optimize "--convert-top-to-tpu= asymmetric=True doWinograd=False ignore_f16_overflow=False q_group_size=0 matmul_perchannel=False gelu_mode=normal" --canonicalize --weight-fold --deinit --mlir-print-debuginfo -o wangzhe_cv181x_int8_asym_tpu.mlir
+ #0 0x00005fde6aca1e87 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x86ae87)
+ #1 0x00005fde6ac9fbae (/workspace/tpu-mlir/install/bin/tpuc-opt+0x868bae)
+ #2 0x00005fde6aca280a (/workspace/tpu-mlir/install/bin/tpuc-opt+0x86b80a)
+ #3 0x000077eeb6842520 (/lib/x86_64-linux-gnu/libc.so.6+0x42520)
+ #4 0x000077eeb68969fc pthread_kill (/lib/x86_64-linux-gnu/libc.so.6+0x969fc)
+ #5 0x000077eeb6842476 gsignal (/lib/x86_64-linux-gnu/libc.so.6+0x42476)
+ #6 0x000077eeb68287f3 abort (/lib/x86_64-linux-gnu/libc.so.6+0x287f3)
+ #7 0x000077eeb682871b (/lib/x86_64-linux-gnu/libc.so.6+0x2871b)
+ #8 0x000077eeb6839e96 (/lib/x86_64-linux-gnu/libc.so.6+0x39e96)
+ #9 0x00005fde6c3ad806 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1f76806)
+#10 0x00005fde6c3ad714 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1f76714)
+#11 0x00005fde6c160bc2 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1d29bc2)
+#12 0x00005fde6adf3c5e (/workspace/tpu-mlir/install/bin/tpuc-opt+0x9bcc5e)
+#13 0x00005fde6c15f1f7 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1d281f7)
+#14 0x00005fde6c273ad4 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1e3cad4)
+#15 0x00005fde6c274101 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1e3d101)
+#16 0x00005fde6c2765a8 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1e3f5a8)
+#17 0x00005fde6ac9353b (/workspace/tpu-mlir/install/bin/tpuc-opt+0x85c53b)
+#18 0x00005fde6ac92904 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x85b904)
+#19 0x00005fde6c48a458 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x2053458)
+#20 0x00005fde6ac8cc0a (/workspace/tpu-mlir/install/bin/tpuc-opt+0x855c0a)
+#21 0x00005fde6ac8d0d4 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x8560d4)
+#22 0x00005fde6ac8bb1a (/workspace/tpu-mlir/install/bin/tpuc-opt+0x854b1a)
+#23 0x000077eeb6829d90 (/lib/x86_64-linux-gnu/libc.so.6+0x29d90)
+#24 0x000077eeb6829e40 __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e40)
+#25 0x00005fde6ac8af25 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x853f25)
+Aborted (core dumped)
+Traceback (most recent call last):
+  File "/workspace/tpu-mlir/python/tools/model_deploy.py", line 479, in <module>
+    lowering_patterns = tool.lowering()
+  File "/workspace/tpu-mlir/python/tools/model_deploy.py", line 170, in lowering
+    patterns = mlir_lowering(self.mlir_file,
+  File "/workspace/tpu-mlir/python/utils/mlir_shell.py", line 202, in mlir_lowering
+    _os_system(cmd, mute=mute,log_level=log_level)
+  File "/workspace/tpu-mlir/python/utils/mlir_shell.py", line 62, in _os_system
+    raise RuntimeError("[!Error]: {}".format(cmd_str))
+RuntimeError: [!Error]: tpuc-opt wangzhe.mlir --processor-assign="chip=cv181x mode=INT8 num_device=1 num_core=1 addr_mode=auto" --import-calibration-table="file=wangzhe_cali_table asymmetric=True" --processor-top-optimize --convert-top-to-tpu=" asymmetric=True doWinograd=False ignore_f16_overflow=False q_group_size=0 matmul_perchannel=False gelu_mode=normal" --canonicalize --weight-fold -o wangzhe_cv181x_int8_asym_tpu.mlir
 ```
 
 ## 运行模型
