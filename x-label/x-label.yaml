@@ -1,0 +1,15 @@
+type: yolo11_seg
+name: yolo11s-seg-wangzhe
+display_name: YOLO11s-Seg 王者荣耀实例分割模型
+model_path: best.onnx
+nms_threshold: 0.45
+confidence_threshold: 0.25
+classes:
+  - hero
+  - soldier
+  - crystol
+  - tower
+  - grass
+  - dragon
+  - buff
+  - monster
