@@ -1,91 +1,18 @@
-# yolo 王者目标识别
+# yolo 车牌目标识别
 
 ## 准备素材
 
 ### 素材来源
 
-素材的来源主要是：
+使用 CCPD 数据集。使用 [国内镜像](https://opendatalab.com/OpenDataLab/CCPD/tree/main) 高速下载。
 
-- 训练营：以摆拍为主（train 开头的素材集）
-  - hero：各种英雄转方向，转角度，释放技能。
-  - soldier：各种兵，如小兵，魔法师，弩车，超级兵，主宰兵（紫色），风暴龙王兵（橙色）。注意红蓝双方兵不一样。
-  - crystol：水晶
-  - tower：防御塔，注意四分钟前的一塔前面有个盾牌，以及红蓝双方区别。
-  - grass：草丛（草会动，可以多截图几张）
-  - dragon：两只手的主宰和暴君，四只手的主宰和暴君，风暴龙王。注意开龙期间是有动画的可以录一下。
-  - buff：红蓝buff，注意各种视角和打人的动画。
-  - monster：野怪，注意各种视角和打人的动画。红蓝双方视角问题可能野怪的方向不同
-- 回放：以不同视角为主，部分情况可能会有角色原地做移动动画的情况，或者特效没出来。
-- 实时录制（round 开头的素材集）：打就行了
-- 屏幕截图（screenshot 开头的素材集）：作为补充
+可以只使用 `base` 集。
 
 ### 制备训练集
 
-使用 FFmpge 切割素材为图片，大约三秒一张图，视情况而定。
+使用 [gendataset.py](data/gendataset.py) 生成。自动分割 5000 张为一组。
 
-#### FFMpeg 
-
-参阅 [ffmpeg隔几秒取一帧](https://blog.csdn.net/racesu/article/details/109491612)。
-
-- `q:v`: 0到51的整数值作为输入。这个范围中的值越小，视频的质量就越好，但文件大小也越大。
-- `fps=fps=1/3`：每 3 秒一张图
-- `round1-1/d.jpg`: 输出位置和格式
-
-```bash
-ffmpeg.exe -i round1-1.mp4 -f image2 -q:v 2 -vf fps=fps=1/3 round1-1/image-round1-1-%3d.jpg
-```
-
-#### 标记
-
-##### 使用 X-AnyLabeling
-
-参阅 [文档](https://github.com/CVHub520/X-AnyLabeling/blob/main/README_zh-CN.md#%E6%96%87%E6%A1%A3)。
-
-###### 安装 X-AnyLabeling
-
-参阅 [1.1 从源码运行](https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/zh_cn/get_started.md#11-%E4%BB%8E%E6%BA%90%E7%A0%81%E8%BF%90%E8%A1%8C)。
-
-###### 使用 X-AnyLabeling
-
-参阅 [用户手册](https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/zh_cn/user_guide.md)。
-
-###### 使用预训练模型标记图片
-
-参阅 [加载已适配的用户自定义模型](https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/zh_cn/custom_model.md#%E5%8A%A0%E8%BD%BD%E5%B7%B2%E9%80%82%E9%85%8D%E7%9A%84%E7%94%A8%E6%88%B7%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)。
-
-使用 [yolo11-seg.yaml](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/cfg/models/11/yolo11-seg.yaml) 作为模型参数训练用于标记的预训练模型。
-
-使用 [x-label.yaml](x-label/x-label.yaml)
-
-```yaml
-type: yolo11_seg
-name: yolo11s-seg-wangzhe
-display_name: YOLO11s-Seg 王者荣耀实例分割模型
-model_path: best.onnx
-nms_threshold: 0.45
-confidence_threshold: 0.25
-classes:
-  - hero
-  - soldier
-  - crystol
-  - tower
-  - grass
-  - dragon
-  - buff
-  - monster
-```
-
-```
-yolo segment export format=onnx model=best.pt
-```
-
-###### 导出数据集
-
-使用导出-导出 YOLO 分割标签导出**多边形**标记数据。
-
-> 使用导出-导出 YOLO 水平框标签导出**矩形**标记数据。本实验不使用此选项。
-
-使用的标签文件见 [classes.txt](data/classes.txt)。
+使用 [dataset.yaml](data/dataset.yaml) 描述数据集。
 
 ## 训练模型
 
@@ -114,16 +41,16 @@ yolo segment export format=onnx model=best.pt
 ```
 .
 ├── images
-│   └── screenshot-1
-│       ├── 1.png # 图片应该放在此处，主文件名应该和标签对应。jpg和png图片测试可混用。
+│   └── base1
+│       ├── 005-89_89-296&519_423&565-422&565_300&566_299&524_421&523-0_0_10_24_11_24_27-152-12.jpg # 图片应该放在此处，主文件名应该和标签对应。jpg和png图片测试可混用。
 ├── labels
-│   ├── screenshot-1 # 两个子目录的文件夹应该同名
-│   │   ├── 1.txt # 导出的标签文件应该放在此处
-│   └── screenshot-1.cache # 由 yolo 自动生成
+│   ├── base1 # 两个子目录的文件夹应该同名
+│   │   ├── 005-89_89-296&519_423&565-422&565_300&566_299&524_421&523-0_0_10_24_11_24_27-152-12.jpg # 导出的标签文件应该放在此处
+│   └── base1.cache # 由 yolo 自动生成
 └── dataset.yaml
 ```
 
-数据集描述文件见 [dataset.yaml](data/dataset/dateset.yaml)
+数据集描述文件见 [dataset.yaml](data/dateset.yaml)
 
 ### 训练代码
 
@@ -218,117 +145,33 @@ python yolov8_export.py --weights best.pt --img-size 640 640
 
 ```
 model_transform.py \
---model_name wangzhe \
---model_def ../best.onnx \
+--model_name CCPD \
+--model_def best.onnx \
 --input_shapes [[1,3,640,640]] \
 --mean 0.0,0.0,0.0 \
 --scale 0.0039216,0.0039216,0.0039216 \
 --keep_aspect_ratio \
 --pixel_format rgb \
---mlir wangzhe.mlir
+--mlir best.mlir
 ```
 
 ```
-run_calibration.py wangzhe.mlir \
---dataset ../wangzhe/ \
---input_num 100 \
--o wangzhe_cali_table
+run_calibration.py best.mlir \
+--dataset ./images \
+--input_num 1000 \
+-o ccpd_cali_table
 ```
 
 用校准表生成 int8 对称 cvimodel:
 
 ```
 model_deploy.py \
---mlir wangzhe.mlir \
+--mlir best.mlir \
 --quant_input --quant_output \
 --quantize INT8 \
---calibration_table wangzhe_cali_table \
+--calibration_table ccpd_cali_table \
 --processor cv181x \
---model wangzhe-int8-sym.cvimodel
-```
-
-### 非对称模型会产生bug
-
-```
-model_deploy.py \
---mlir wangzhe.mlir \
---quant_input --quant_output \
---quantize INT8 --asymmetric \
---calibration_table wangzhe_cali_table \
---processor cv181x \
---model wangzhe-int8-asym.cvimodel
-```
-
-使用非对称会出现bug。
-
-```
-root@bacc5a4054eb:/workspace/model_yolov5s/workspace# model_deploy.py \                          
---mlir wangzhe.mlir \                                                                           
---quant_input --quant_output \                                                                  
---quantize INT8 --asymmetric \                                                                  
---calibration_table wangzhe_cali_table \                                                        
---processor cv181x \                                                                            
---model wangzhe-int8-asym.cvimodel                                                              
-2024/11/17 21:17:43 - INFO : TPU-MLIR 081d28a-20241114                     
-2024/11/17 21:17:43 - INFO :                                                                    
-  load_config Preprocess args :                                                                 
-        resize_dims           : [640, 640]                                                      
-        keep_aspect_ratio     : True                                                            
-        keep_ratio_mode       : letterbox                                                       
-        pad_value             : 0                                                               
-        pad_type              : center                                                          
-        input_dims            : [640, 640]                                                      
-        --------------------------                                                              
-        mean                  : [0.0, 0.0, 0.0]                                                 
-        scale                 : [0.0039216, 0.0039216, 0.0039216]
-        --------------------------
-        pixel_format          : rgb                                                             
-        channel_format        : nchw   
-                                                                                                
-[Running]: tpuc-opt wangzhe.mlir --processor-assign="chip=cv181x mode=INT8 num_device=1 num_core=1 addr_mode=auto" --import-calibration-table="file=wangzhe_cali_table asymmetric=True" --processor-top-optimize --convert-top-to-tpu=" asymmetric=True doWinograd=False ignore_f16_overflow=False q_group_size=0 matmul_perchannel=False gelu_mode=normal" --canonicalize --weight-fold -o wang
-zhe_cv181x_int8_asym_tpu.mlir                                                                   
-<unknown>:0: error: illegal min and max: (8.494865e+00:-8.494865e+00)          
-tpuc-opt: /llvm-project/mlir/include/mlir/IR/StorageUniquerSupport.h:180: static ConcreteT mlir::detail::StorageUserBase<mlir::quant::CalibratedQuantizedType, mlir::quant::QuantizedType, mlir::quant::detail::CalibratedQuantizedTypeStorage, mlir::detail::TypeUniquer>::get(mlir::MLIRContext *, Args...) [ConcreteT = mlir::quant::CalibratedQuantizedType, BaseT = mlir::quant::QuantizedType, StorageT = mlir::quant::detail::CalibratedQuantizedTypeStorage, UniquerT = mlir::detail::TypeUniquer, Traits = <>, Args = <mlir::Type, double, double>]: Assertion `succeeded(ConcreteT::verify(getDefaultDiagnosticEmitFn(ctx), args...))' failed.
-PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
-Stack dump:
-0.      Program arguments: tpuc-opt wangzhe.mlir --init "--processor-assign=chip=cv181x mode=INT8 num_device=1 num_core=1 addr_mode=auto" "--import-calibration-table=file=wangzhe_cali_table asymmetric=True" --processor-top-optimize "--convert-top-to-tpu= asymmetric=True doWinograd=False ignore_f16_overflow=False q_group_size=0 matmul_perchannel=False gelu_mode=normal" --canonicalize --weight-fold --deinit --mlir-print-debuginfo -o wangzhe_cv181x_int8_asym_tpu.mlir
- #0 0x00005fde6aca1e87 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x86ae87)
- #1 0x00005fde6ac9fbae (/workspace/tpu-mlir/install/bin/tpuc-opt+0x868bae)
- #2 0x00005fde6aca280a (/workspace/tpu-mlir/install/bin/tpuc-opt+0x86b80a)
- #3 0x000077eeb6842520 (/lib/x86_64-linux-gnu/libc.so.6+0x42520)
- #4 0x000077eeb68969fc pthread_kill (/lib/x86_64-linux-gnu/libc.so.6+0x969fc)
- #5 0x000077eeb6842476 gsignal (/lib/x86_64-linux-gnu/libc.so.6+0x42476)
- #6 0x000077eeb68287f3 abort (/lib/x86_64-linux-gnu/libc.so.6+0x287f3)
- #7 0x000077eeb682871b (/lib/x86_64-linux-gnu/libc.so.6+0x2871b)
- #8 0x000077eeb6839e96 (/lib/x86_64-linux-gnu/libc.so.6+0x39e96)
- #9 0x00005fde6c3ad806 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1f76806)
-#10 0x00005fde6c3ad714 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1f76714)
-#11 0x00005fde6c160bc2 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1d29bc2)
-#12 0x00005fde6adf3c5e (/workspace/tpu-mlir/install/bin/tpuc-opt+0x9bcc5e)
-#13 0x00005fde6c15f1f7 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1d281f7)
-#14 0x00005fde6c273ad4 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1e3cad4)
-#15 0x00005fde6c274101 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1e3d101)
-#16 0x00005fde6c2765a8 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x1e3f5a8)
-#17 0x00005fde6ac9353b (/workspace/tpu-mlir/install/bin/tpuc-opt+0x85c53b)
-#18 0x00005fde6ac92904 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x85b904)
-#19 0x00005fde6c48a458 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x2053458)
-#20 0x00005fde6ac8cc0a (/workspace/tpu-mlir/install/bin/tpuc-opt+0x855c0a)
-#21 0x00005fde6ac8d0d4 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x8560d4)
-#22 0x00005fde6ac8bb1a (/workspace/tpu-mlir/install/bin/tpuc-opt+0x854b1a)
-#23 0x000077eeb6829d90 (/lib/x86_64-linux-gnu/libc.so.6+0x29d90)
-#24 0x000077eeb6829e40 __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e40)
-#25 0x00005fde6ac8af25 (/workspace/tpu-mlir/install/bin/tpuc-opt+0x853f25)
-Aborted (core dumped)
-Traceback (most recent call last):
-  File "/workspace/tpu-mlir/python/tools/model_deploy.py", line 479, in <module>
-    lowering_patterns = tool.lowering()
-  File "/workspace/tpu-mlir/python/tools/model_deploy.py", line 170, in lowering
-    patterns = mlir_lowering(self.mlir_file,
-  File "/workspace/tpu-mlir/python/utils/mlir_shell.py", line 202, in mlir_lowering
-    _os_system(cmd, mute=mute,log_level=log_level)
-  File "/workspace/tpu-mlir/python/utils/mlir_shell.py", line 62, in _os_system
-    raise RuntimeError("[!Error]: {}".format(cmd_str))
-RuntimeError: [!Error]: tpuc-opt wangzhe.mlir --processor-assign="chip=cv181x mode=INT8 num_device=1 num_core=1 addr_mode=auto" --import-calibration-table="file=wangzhe_cali_table asymmetric=True" --processor-top-optimize --convert-top-to-tpu=" asymmetric=True doWinograd=False ignore_f16_overflow=False q_group_size=0 matmul_perchannel=False gelu_mode=normal" --canonicalize --weight-fold -o wangzhe_cv181x_int8_asym_tpu.mlir
+--model best.cvimodel
 ```
 
 ## 运行模型

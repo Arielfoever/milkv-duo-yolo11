@@ -1,0 +1,61 @@
+# Ultralytics YOLO 🚀, AGPL-3.0 license
+# COCO8 dataset (first 8 images from COCO train2017) by Ultralytics
+# Documentation: https://docs.ultralytics.com/datasets/detect/coco8/
+# Example usage: yolo train data=coco8.yaml
+# parent
+# ├── ultralytics
+# └── datasets
+#     └── coco8  ← downloads here (1 MB)
+
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: E:/CCPD/final # dataset root dir
+train: # train images (relative to 'path') 4 images
+  - images/base1
+  - images/base2
+  - images/base3
+  - images/base4
+  - images/base5
+  - images/base6
+  - images/base7
+  - images/base8
+  - images/base9 
+  - images/base10
+  - images/base11
+  - images/base12
+  - images/base13
+  - images/base14
+  - images/base15
+  - images/base16
+  - images/base17
+  - images/base18
+  - images/base19
+  - images/base20
+  - images/base21
+  - images/base22
+  - images/base23
+  - images/base24
+  - images/base25
+  - images/base26
+  - images/base27
+  - images/base28
+  - images/base29
+  - images/base30
+val:
+  - images/base31
+  - images/base32
+  - images/base33
+  - images/base34
+  - images/base35
+test: 
+  - images/base36
+  - images/base37
+  - images/base38
+  - images/base39
+
+# Classes
+names:
+  0: license
+  
+
+# Download script/URL (optional)
+# download: https://github.com/ultralytics/assets/releases/download/v0.0.0/coco8.zip

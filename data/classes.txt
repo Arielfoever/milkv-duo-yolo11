@@ -1,8 +1,0 @@
-hero
-soldier
-crystol
-tower
-grass
-dragon
-buff
-monster

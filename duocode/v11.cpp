@@ -15,14 +15,7 @@
 #include <opencv2/opencv.hpp>
 
 static const char *model_names[] = {
-    "hero",
-    "soldier",
-    "crystol",
-    "tower",
-    "grass",
-    "dragon",
-    "buff",
-    "monster"
+    "license"
 };
 
 // set preprocess and algorithm param for yolov8 detection
@@ -50,7 +43,7 @@ CVI_S32 init_param(const cvitdl_handle_t tdl_handle) {
   // setup yolo algorithm preprocess
   YoloAlgParam yolov8_param =
       CVI_TDL_Get_YOLO_Algparam(tdl_handle, CVI_TDL_SUPPORTED_MODEL_YOLOV8_DETECTION);
-  yolov8_param.cls = 8;// TODO)) Change this to your num of classes. For Coco, use 80 
+  yolov8_param.cls = 1;// TODO)) Change this to your num of classes. For Coco, use 80 
 
   printf("setup yolov8 algorithm param \n");
   ret =
